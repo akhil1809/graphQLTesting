@@ -56,12 +56,12 @@ public class UserTests {
     	int getLimit=user.getLimit();
     	Object payloadCheck= userEndPoint.getQueryByLimit(user);
     	String payload= gson.toJson(payloadCheck);
-        Response response= UserEndPoint.getUsersByCounts(payload,getLimit,baseURL,"/northwind");
+        Response response= UserEndPoint.getUsersByCounts(payload,getLimit,baseURL,"/user");
         response.then().log().all().assertThat().statusCode(HttpStatus.SC_OK);
         Assert.assertEquals(5,CommonFunction.getResponseOject(response).getJSONObject("data").getJSONArray("userMany").length());
     }
 
-    @Test(groups = {"graphql"},priority = 1)
+    @Test(groups = {"graphqlTest"},priority = 1)
     public void createUser()
     {  
     	Map<String,Object> hm= new HashMap<String, Object>();
@@ -77,7 +77,7 @@ public class UserTests {
     	 String payload= gson.toJson(payloadCheck);
     	 System.out.println(payload);
 			
-		 Response response=UserEndPoint.getUsers(payload,baseURL,"/northwind");
+		 Response response=UserEndPoint.getUsers(payload,baseURL,"/user");
 		 response.then().log().all().assertThat().statusCode(HttpStatus.SC_OK);
 		 
 		 String user_id= response.path("data.userCreate.record.name");
