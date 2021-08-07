@@ -2,7 +2,7 @@
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
 <suite name="Suite">
   <test thread-count="2" name="GraphQlTest" parallel="tests">
-  <parameter name="baseURI" value="https://graphql-compose.herokuapp.com"></parameter>
+  <parameter name="baseURI" value="https://graphql-compose.herokuapp.com11"></parameter>
     <groups>
      <run>
        <include name="graphql"></include>
