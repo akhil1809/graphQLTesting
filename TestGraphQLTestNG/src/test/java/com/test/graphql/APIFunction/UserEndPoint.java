@@ -6,6 +6,8 @@ import java.util.List;
 import com.test.graphql.POJO.Address;
 import com.test.graphql.POJO.Query;
 import com.test.graphql.POJO.Users;
+
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
@@ -23,26 +25,26 @@ public class UserEndPoint {
         users=new Users();
     }
 
-
+@Step("Set User header")
     public static RequestSpecification setUserHeader(String baseURI)
     {
         RequestSpecification requestSpecification = RestAssured.given().baseUri(baseURI).contentType(ContentType.JSON);
         return requestSpecification;
     }
-
+@Step("Get User By Count")
     public static Response getUsersByCounts(String payload,int limit,String baseURI,String path)
     {
         Response  response=RestAssured.given().log().all().spec(setUserHeader(baseURI)).body(payload).when().log().all().post(path);
         return response;
     }
-
+@Step("Get User List response")
     public static Response getUsers(String payload,String baseURI,String path)
     {
         Response  response=RestAssured.given().log().all().spec(setUserHeader(baseURI)).body(payload).when().log().all().post(path);
         return response;
     }
 
-    
+    @Step("Query User by Limit")
     public Query getQueryByLimit(Object object)
     {
         query.setQuery("query getmanyUser($limit: Int) {\n" +
@@ -66,6 +68,7 @@ public class UserEndPoint {
     	MALE,FEMALE
     }
    
+   @Step("Create User Query")
    public Query createUser(Object object)
    {
 	   query.setQuery("mutation ($name :String,$age :Float, $street : String)\n"

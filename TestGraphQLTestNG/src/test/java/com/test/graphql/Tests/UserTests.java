@@ -19,6 +19,10 @@ import com.test.graphql.POJO.Address;
 import com.test.graphql.POJO.Users;
 import com.test.graphql.Utils.CommonFunction;
 
+import io.qameta.allure.Description;
+import io.qameta.allure.Severity;
+import io.qameta.allure.SeverityLevel;
+import io.qameta.allure.Story;
 import io.restassured.response.Response;
 import org.testng.annotations.*;
 
@@ -50,6 +54,9 @@ public class UserTests {
     }
 
     @Test(groups = {"graphql"})
+    @Severity(SeverityLevel.CRITICAL)
+    @Description ("Get The user By Limit")
+    @Story("Validate user by limit option")
     public void getUserByLimit()
     {  	
     	user.setLimit(5);
@@ -61,7 +68,10 @@ public class UserTests {
         Assert.assertEquals(5,CommonFunction.getResponseOject(response).getJSONObject("data").getJSONArray("userMany").length());
     }
 
-    @Test(groups = {"graphqlTest"},priority = 1)
+    @Test(groups = {"graphql"},priority = 1)
+    @Severity(SeverityLevel.CRITICAL)
+    @Description ("Create user with name By")
+    @Story("Create user with name")
     public void createUser()
     {  
     	Map<String,Object> hm= new HashMap<String, Object>();
