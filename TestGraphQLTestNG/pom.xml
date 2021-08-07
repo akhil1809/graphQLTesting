@@ -12,6 +12,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <rest.version>4.4.0</rest.version>
         <aspectj.version>1.9.7</aspectj.version>
+        <allure.version>2.14.0</allure.version>
     </properties>
     <dependencies>
         <dependency>
@@ -61,7 +62,7 @@
         <dependency>
 	        <groupId>io.qameta.allure</groupId>
     		<artifactId>allure-testng</artifactId>
-    		<version>2.14.0</version>
+    		<version>${allure.version}</version>
         </dependency>
     </dependencies>
     <build>
@@ -100,14 +101,17 @@
         </plugins>
     </build>
     <reporting>
-  <excludeDefaults>true</excludeDefaults>
-  <plugins>
-  	<plugin>
-  		<groupId>io.qmeta.allure</groupId>
-  		<artifactId>allure-maven</artifactId>
-  		<version>2.9</version>
-  	</plugin>
-  </plugins>
+	 <excludeDefaults>true</excludeDefaults>
+	  <plugins>
+	  	<plugin>
+	  		<groupId>io.qmeta.allure</groupId>
+	  		<artifactId>allure-maven</artifactId>
+	  		<version>2.10.0</version>
+	  		 <configuration>
+	              <reportVersion>${allure.version}</reportVersion>
+	         </configuration>
+	  	</plugin>
+	  </plugins>
   </reporting>
 
 </project>
