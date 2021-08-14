@@ -1,0 +1,80 @@
+import java.net.*;
+import java.io.*;
+
+node('master'){
+   
+    def buildNumber="${env.BUILD_NUMBER}";
+    env.buildNumber=buildNumber
+    def workSpace="${env.WORKSPACE}"
+    env.workSpace=workSpace;
+    def Branch=params.Branch
+    env.Branch=Branch
+            
+             
+        stage("repo checkout"){
+           checkout()
+            }
+            stage("run test")
+            {
+               try{
+                    testrun()
+               }
+               catch(Exception e){
+                   
+                   e.toString
+                   
+               }
+            }
+            stage("generateReport")
+            {
+                 generateAllureReport()
+            }
+            stage("sendEmail")
+            {
+                sendEmailNotification()
+            }
+            stage("delete workspace")
+            {
+                cleanWs()
+                deleteDir()
+            }
+}
+
+def checkout()
+{
+    checkout([$class: 'GitSCM', branches: [[name: params.Branch]], 
+    userRemoteConfigs: [[credentialsId: 'gitcred', url: 'https://github.com/akhil1809/graphQLTesting.git']]])
+}
+def testrun()
+{
+    try
+    {
+        sh 'mvn -f ./TestGraphQLTestNG/pom.xml clean test -Dgroups=graphql -Dsuite=testng'
+    }
+    catch(Exception e)
+    {
+     
+      echo e.toString()
+      
+    }
+}
+
+def generateAllureReport()
+{
+ 
+allure([
+         includeProperties: false,
+         jdk: '',
+         reportBuildPolicy: 'ALWAYS',
+         results: [[path: 'target/allure-results'], [path: 'TestGraphQLTestNG/allure-results']]
+         ])
+    
+}
+         
+def sendEmailNotification()
+{
+    emailext body:  """<p>STARTED: Job '${env.JOB_NAME} [${env.buildNumber}]':</p>
+                 <p>Check console output at "<a href="${env.BUILD_URL}">${env.JOB_NAME} [${env.buildNumber}]</a>"</p>""", 
+                 recipientProviders: [requestor(), developers()], 
+                subject: "STARTED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]'"
+}
